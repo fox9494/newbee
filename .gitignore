@@ -22,5 +22,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-*.log
-*.txt
+*/*.log
+*/*.txt
+*/*.csv
