@@ -10,7 +10,7 @@ import mysql_st
 ##抓取深圳证券所大盘数据
 FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
-handler = logging.FileHandler('sz.log')  ##使用handler输出不同目的地
+handler = logging.FileHandler('abc.log')  ##使用handler输出不同目的地
 handler.setFormatter(logging.Formatter(FORMAT))
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
@@ -118,7 +118,7 @@ def get_content_sz(start,end):
     return
 
 if __name__=="__main__":
-    start="2018-08-24";end="2018-09-01"
+    start="2018-08-24";end="2018-09-06"
     begin = datetime.datetime.today()
     logger.info("%s,开始爬取数据 start:%s,end:%s",datetime.datetime.today(),start,end)
     get_content_sz(start,end)
