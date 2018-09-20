@@ -62,6 +62,6 @@ def get_content_sh(start,end):
 
 
 start="2018-08-23"
-end="2018-09-01"
+end="2018-09-16"
 logger.info("开始爬取数据 start:%s,end:%s",start,end)
 get_content_sh(start,end)

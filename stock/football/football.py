@@ -143,8 +143,18 @@ def  get_analysis(league_name,name,start,end,company_name):
     #       "and company_name='{}' and (host_name='{}' or guest_name='{}') and match_time>='{}' and match_time<='{}' order by match_time;".\
     #     format(league_name,company_name,name,name,start,end)
 
-    sql="select match_time,host_name,host_goal,guest_name,guest_goal,company_name,first_win,first_same,first_lost,win,same,lost " \
-        "from t_football_zg a,t_football_odd b where a.source_match_id=b.source_match_id and company_name='{}' order by match_time;".format(company_name)
+    sql = """select
+    match_time, host_name, host_goal, guest_name, guest_goal, company_name, first_win, first_same, first_lost, win, same, lost from t_football_zg a, t_football_odd b
+    where a.source_match_id = b.source_match_id and company_name = '{}'""".format(company_name)
+
+    if league_name != None:
+        sql = sql + "and league_name='{}' ".format(league_name)
+    if name!=None:
+        sql = sql + " and (host_name='{}' or guest_name='{}')".format(name,name)
+    sql = sql+" order by match_time"
+
+    # sql="select match_time,host_name,host_goal,guest_name,guest_goal,company_name,first_win,first_same,first_lost,win,same,lost " \
+    #     "from t_football_zg a,t_football_odd b where a.source_match_id=b.source_match_id and company_name='{}' order by match_time".format(company_name)
     cursor.execute(sql)
     win_num = 0.0
     right = 0
@@ -181,35 +191,34 @@ def  get_analysis(league_name,name,start,end,company_name):
             isLostMin = True
 
         if (host_goal > guest_goal and isWinMin == True):
-            logger.info("一个正盘,{} vs{},比分:{}-{},赔率:{}:{}:{}".format(host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost))
+            logger.info("一个正盘,时间:{},{} vs{},比分:{}-{},赔率:{}:{}:{}".format(match_time,host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost))
             right = right + 1
             win_num = win_num + float(first_win) - 1
 
         if (host_goal == guest_goal and isdrawMin == True):
-            logger.info(
-                "一个正盘,{} vs{},比分:{}-{},赔率:{}:{}:{}".format(host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost))
+            logger.info(logger.info("一个正盘,时间:{},{} vs{},比分:{}-{},赔率:{}:{}:{}".format(match_time,host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost)))
             win_num = win_num + float(first_same) - 1
             right = right + 1
 
         if (host_goal < guest_goal and isLostMin == True):
-            logger.info(
-                "一个正盘,{} vs{},比分:{}-{},赔率:{}:{}:{}".format(host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost))
+            logger.info(logger.info("一个正盘,时间:{},{} vs{},比分:{}-{},赔率:{}:{}:{}".format(match_time,host_name,guest_name, host_goal, guest_goal, first_win, first_same, first_lost)))
             win_num = win_num + float(first_lost) - 1
             right = right + 1
 
         if (host_goal > guest_goal and isWinMin == False):
-            logger.info(
-                "一个反盘,{} vs{},比分:{}-{},赔率:{}:{}:{}".format(host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost))
+            logger.info("一个反盘,时间:{},{} vs{},比分:{}-{},赔率:{}:{}:{}".format(match_time,host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost))
             left = left + 1
             left_num = left_num + float(first_win) - 1
 
         if (host_goal == guest_goal and isdrawMin == False):
-            logger.info("一个平盘,{} vs{},比分:{}-{},赔率:{}:{}:{}".format(host_name, guest_name, host_goal, guest_goal, first_win, first_same, first_lost))
+            logger.info("一个平盘,时间:{},{} vs{},比分:{}-{},赔率:{}:{}:{}".format(match_time,host_name, guest_name, host_goal,
+                                                                         guest_goal, first_win, first_same, first_lost))
             draw_num = draw_num + float(first_same) - 1
             draw_total = draw_total + 1
 
         if (host_goal < guest_goal and isLostMin == False):
-            logger.info("一个反盘,{} vs{},比分:{}-{},赔率:{}:{}:{}".format(host_name, guest_name, host_goal, guest_goal,first_win, first_same, first_lost))
+            logger.info("一个反盘,时间:{},{} vs{},比分:{}-{},赔率:{}:{}:{}".format(match_time,host_name, guest_name, host_goal,
+                                                                         guest_goal, first_win, first_same, first_lost))
             left_num = left_num + float(first_lost) - 1
             left = left + 1
         match_num = match_num + 1
@@ -225,12 +234,12 @@ def  get_analysis(league_name,name,start,end,company_name):
 
 if __name__=="__main__":
     start="2017-05-01"
-    end="2018-06-01"
+    end="2018-09-19"
     # logger.info("开始爬取数据 start:%s,end:%s",start,end)
     # get_content_sh(start,end)
 
     logger.info("开始计算数据 start:%s,end:%s", start, end)
     # get_analysis("意甲","尤文图斯",start, end,"立博")
 
-    get_analysis("所有", "所有", start, end, "威廉希尔")
+    get_analysis("欧罗巴杯", "波尔多", start, end, "威廉希尔")
     connect.close()

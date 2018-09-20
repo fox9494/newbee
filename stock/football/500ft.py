@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 logger2 = logging.getLogger("mylog")
 logger2.addHandler(handler)
 
+a = file()
+a.read()
 
 dic={"1072":"曼城","1075":"曼联","1238":"热刺","1011":"利物浦","1173":"切尔西","554":"阿森纳","700":"伯恩利",
      "565":"埃佛顿","973":"莱切","1137":"纽卡斯尔","516":"水晶宫","667":"伯恩茅斯","1286":"西汉姆联",

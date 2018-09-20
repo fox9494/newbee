@@ -18,14 +18,21 @@ connect = MySQLdb.connect("127.0.0.1", "root", "root", "test", charset='utf8')
 ##显示个股pe，pb的
 code="000807"
 df = pd.read_sql("select * from st_stock where code={}".format(code),connect)
-df.plot("trade_date",["pb"])
+
+# code="600030"
+# df1 = pd.read_sql("select * from st_stock where code={}".format(code),connect)
+# df.plot("trade_date",["pb"],color="#F08080")
+df.plot("trade_date",["pb"],color="#F08080")
 
 
 
 # df.set_index("trade_date")
 # df.plot("trade_date",["pb","pe"])
 
-
+# 为X轴添加标签
+plot.xlabel("time")
+# 为Y轴添加标签
+plot.ylabel("value")
 plot.legend()
 plot.show()
 with pd.option_context('display.max_rows', 20, 'display.max_columns', None):
